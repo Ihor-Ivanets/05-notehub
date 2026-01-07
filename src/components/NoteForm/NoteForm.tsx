@@ -81,7 +81,7 @@ function NoteForm({ onClose }: NoteFormProps) {
             rows={8}
             className={css.textarea}
           ></Field>
-          <ErrorMessage name="tag" component="span" className={css.error} />
+          <ErrorMessage name="content" component="span" className={css.error} />
         </div>
 
         <div className={css.formGroup}>
