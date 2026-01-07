@@ -6,10 +6,15 @@ import SearchBox from "../SearchBox/SearchBox";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "../../services/noteService";
 import Pagination from "../Pagination/Pagination";
+import { Toaster } from "react-hot-toast";
+import Modal from "../Modal/Modal";
+import NoteForm from "../NoteForm/NoteForm";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateNote, setIsCreateNote] = useState(false);
 
   const handleChange = useDebouncedCallback((value: string) => {
     setSearchQuery(value);
@@ -22,10 +27,15 @@ function App() {
     placeholderData: keepPreviousData,
   });
 
-  console.log(data);
-
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+  const toggleCreateNote = () => {
+    setIsCreateNote(!isCreateNote);
+  };
 
   return (
     <div className={css.app}>
@@ -38,10 +48,30 @@ function App() {
             onPageChange={setCurrentPage}
           />
         )}
-        <button className={css.button}>Create note +</button>
+        <button
+          onClick={() => {
+            toggleModal();
+            toggleCreateNote();
+          }}
+          className={css.button}
+        >
+          Create note +
+        </button>
       </header>
-
+      {isModalOpen && (
+        <Modal onClose={toggleModal}>
+          {isCreateNote && (
+            <NoteForm
+              onClose={() => {
+                toggleModal();
+                toggleCreateNote();
+              }}
+            />
+          )}
+        </Modal>
+      )}
       {notes.length > 0 && <NoteList notes={notes} />}
+      <Toaster />
     </div>
   );
 }
