@@ -23,21 +23,18 @@ const initialValues: FormValues = {
 
 const NoteSchema = Yup.object().shape({
   title: Yup.string()
-    .min(3, "The title must be at least 3 characters long.")
-    .max(50, "The title must be no longer than 50 characters.")
-    .required("Title is a required field."),
+    .min(3, "Title should contain at least 3 characters.")
+    .max(50, "Title cannot exceed 50 characters.")
+    .required("Please enter a title."),
 
-  content: Yup.string().max(
-    500,
-    "The content must be no longer than 500 characters."
-  ),
+  content: Yup.string().max(500, "Content must be 500 characters or fewer."),
 
   tag: Yup.string()
     .oneOf(
       ["Todo", "Work", "Personal", "Meeting", "Shopping"],
-      "Tag must be one of: Todo, Work, Personal, Meeting, Shopping"
+      "Please select a valid tag."
     )
-    .required("Tag is a required field."),
+    .required("Selecting a tag is required."),
 });
 
 function NoteForm({ onClose }: NoteFormProps) {
