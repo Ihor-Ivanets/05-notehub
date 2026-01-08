@@ -14,7 +14,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCreateNote, setIsCreateNote] = useState(false);
 
   const handleChange = useDebouncedCallback((value: string) => {
     setSearchQuery(value);
@@ -33,9 +32,6 @@ function App() {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  const toggleCreateNote = () => {
-    setIsCreateNote(!isCreateNote);
-  };
 
   return (
     <div className={css.app}>
@@ -51,7 +47,6 @@ function App() {
         <button
           onClick={() => {
             toggleModal();
-            toggleCreateNote();
           }}
           className={css.button}
         >
@@ -59,15 +54,8 @@ function App() {
         </button>
       </header>
       {isModalOpen && (
-        <Modal onClose={toggleModal}>
-          {isCreateNote && (
-            <NoteForm
-              onClose={() => {
-                toggleModal();
-                toggleCreateNote();
-              }}
-            />
-          )}
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <NoteForm onClose={() => setIsModalOpen(false)} />
         </Modal>
       )}
       {notes.length > 0 && <NoteList notes={notes} />}

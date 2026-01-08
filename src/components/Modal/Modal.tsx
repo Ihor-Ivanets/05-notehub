@@ -30,7 +30,7 @@ function Modal({ children, onClose }: ModalProps) {
       onClick={handleBackdropClick}
       className={css.backdrop}
       role="dialog"
-      arial-modal="true"
+      aria-modal="true"
     >
       <div className={css.modal}>{children}</div>
     </div>,
